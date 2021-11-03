@@ -1,0 +1,20 @@
+{
+  "name": "firebase-security-master-course-m",
+  "version": "1.0.0",
+  "description": "<h1> Firebase Security Master Class </h2>",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --env=node --forceExit"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^2.0.1",
+    "@types/firebase": "^3.2.1",
+    "@types/jest": "^27.0.2",
+    "firebase-admin": "^10.0.0",
+    "jest": "^27.3.1",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.4.4"
+  }
+}
