@@ -1,18 +1,24 @@
 import {
 	initializeTestEnvironment,
 	RulesTestEnvironment,
+	RulesTestContext,
 } from "@firebase/rules-unit-testing";
 import firebase from "../node_modules/firebase/compat";
+import {
+	getFirestore,
+	connectFirestoreEmulator,
+	Firestore,
+} from "firebase/firestore";
 
 const { readFileSync } = require("fs");
 
 const projectId = `firebase-security-mc`;
-let db: RulesTestEnvironment;
+let env: RulesTestEnvironment;
+let context: RulesTestContext;
+let db: Firestore;
 
-export const setupTestEnvironment = async (
-	user_id: string,
-): Promise<RulesTestEnvironment> =>
-	initializeTestEnvironment({
+export const setupTestEnvironment = async (): Promise<RulesTestEnvironment> => {
+	env = await initializeTestEnvironment({
 		projectId,
 		firestore: {
 			rules: readFileSync(`firestore.rules`, `utf8`),
@@ -24,6 +30,16 @@ export const setupTestEnvironment = async (
 			port: 9199,
 		},
 	});
+
+	return env;
+};
+
+export const setContext = async (
+	userId: string,
+	env: RulesTestEnvironment,
+): Promise<RulesTestContext> => {
+	return env.authenticatedContext(userId);
+};
 
 export const setupFirestore = async (
 	userId: string,
@@ -38,7 +54,7 @@ export const setupStorage = async (
 	testEnv.authenticatedContext(userId).storage();
 
 export const teardown = async () => {
-	await db.clearStorage();
-	await db.clearFirestore();
-	await db.cleanup();
+	await env.clearStorage();
+	await env.clearFirestore();
+	await env.cleanup();
 };
